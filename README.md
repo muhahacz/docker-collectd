@@ -1,1 +1,3 @@
 # docker-collectd
+
+`tst mkd`
