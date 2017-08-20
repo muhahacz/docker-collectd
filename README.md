@@ -1,3 +1,3 @@
 # docker-collectd
 
-`tst mkd`
+Based on Alpine:latest
