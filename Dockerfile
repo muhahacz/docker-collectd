@@ -14,12 +14,17 @@ FROM alpine:latest
 
 RUN apk update && apk add --no-cache libltdl tzdata
 
-WORKDIR /opt/
-
 COPY --from=builder   /opt/collectd  /opt/collectd
 
-VOLUME /opt/collectd/etc/
 
-RUN ln -sf /dev/stout /var/log/collectd.log  && mkdir -p /opt/collectd/collectd.conf.d 
+RUN ln -sf /dev/stout /var/log/collectd.log  && mkdir -p /opt/collectd/etc/collectd.conf.d
+
+RUN echo $'<Include "/opt/collectd/etc/collectd.conf.d"> \n\
+Filter "*.conf" \n\
+</Include> \n'\
+>> /opt/collectd/etc/collectd.conf && cat /opt/collectd/etc/collectd.conf
+
+VOLUME /opt/collectd/etc/
+VOLUME /opt/collectd/share/
 
 CMD exec /opt/collectd/sbin/collectd -C /opt/collectd/etc/collectd.conf -f
