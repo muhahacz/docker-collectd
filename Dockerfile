@@ -12,12 +12,14 @@ RUN mkdir -p /tmp/collectd && curl -sL `curl -s https://api.github.com/repos/col
 
 FROM alpine:latest
 
-RUN apk update && apk add --no-cache libltdl
+RUN apk update && apk add --no-cache libltdl tzdata
 
 WORKDIR /opt/
 
-COPY --from=builder   /opt/collectd  ./collectd
+COPY --from=builder   /opt/collectd  /opt/collectd
 
 VOLUME /opt/collectd/etc/
+
+RUN ln -sf /dev/stout /var/log/collectd.log  && mkdir -p /opt/collectd/collectd.conf.d 
 
 CMD exec /opt/collectd/sbin/collectd -C /opt/collectd/etc/collectd.conf -f
