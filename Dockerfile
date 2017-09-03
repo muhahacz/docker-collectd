@@ -16,7 +16,9 @@ RUN apk update && apk add --no-cache libltdl tzdata
 
 COPY --from=builder   /opt/collectd  /opt/collectd
 
-RUN ln -sf /dev/stout /var/log/collectd.log  && mkdir -p /opt/collectd/etc/collectd.conf.d
+# RUN ln -sf /dev/stout /var/log/collectd.log
+
+ RUN mkdir -p /opt/collectd/etc/collectd.conf.d
 
 ADD local.conf  /opt/collectd/etc/collectd.conf.d/
 
